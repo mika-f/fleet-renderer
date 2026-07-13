@@ -10,12 +10,12 @@ Fleet content is a small canvas composition: one background, zero-or-one media l
 | --------------------------------------------------- | ---------------------------- | ----------------------------------------------------------------------------- |
 | `@natsuneko-laboratory/fleet-renderer-core`        | `packages/core`              | Platform-agnostic types, constants, and the pure `resolveFleetLayout` engine |
 | `@natsuneko-laboratory/fleet-renderer-react-native`| `packages/react-native`      | React Native `<FleetCanvas>` renderer + editor placement helpers            |
+| `@natsuneko-laboratory/fleet-renderer-react-dom`   | `packages/react-dom`         | React DOM `<FleetContent>` renderer (CSS `%`/`cqw`/`cqh` positioned), supports both read-only and editable-preview modes |
 
 ### Planned
 
 | Package                                             | Target                                                              |
 | ---------------------------------------------------- | -------------------------------------------------------------------- |
-| `@natsuneko-laboratory/fleet-renderer-react-dom`    | Web (CSS container-query based), for `catalyst.natsuneko.com`       |
 | `@natsuneko-laboratory/fleet-renderer-satori`       | Server-side PNG rendering (satori + resvg), for `api.natsuneko.com` |
 
 

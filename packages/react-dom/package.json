@@ -1,0 +1,48 @@
+{
+  "name": "@natsuneko-laboratory/fleet-renderer-react-dom",
+  "version": "0.1.0",
+  "description": "React DOM renderer for Fleet, built on @natsuneko-laboratory/fleet-renderer-core",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.tsx --format cjs,esm --dts --external react --external react-dom",
+    "dev": "tsup src/index.tsx --format cjs,esm --dts --external react --external react-dom --watch",
+    "test": "echo \"no tests yet\" && exit 0",
+    "lint": "tsc --noEmit"
+  },
+  "keywords": [
+    "fleet",
+    "catalyst",
+    "renderer",
+    "react-dom"
+  ],
+  "repository": {
+    "url": "https://github.com/mika-f/fleet-renderer/"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@natsuneko-laboratory/fleet-renderer-core": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.6.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
