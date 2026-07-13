@@ -3,14 +3,34 @@ import {
   type FleetContentData,
   type FleetTextStyle,
 } from "@natsuneko-laboratory/fleet-renderer-core";
-import type { ComponentType, CSSProperties, PointerEvent, ReactNode } from "react";
+import type { ComponentType, PointerEvent, ReactNode } from "react";
+
+/**
+ * Minimal, `react`-type-independent style bags for the style-like props that cross the package
+ * boundary (`selectionStyle`, `FleetMediaImageProps.style`). Consuming apps often globally augment
+ * `React.CSSProperties` (e.g. Radix UI adding a `--radix-*` custom-property index signature) —
+ * since this package has its own separately-installed `@types/react` (it isn't published/hoisted
+ * into the consumer's own node_modules yet), importing `CSSProperties` for a prop a consumer must
+ * both receive a value for *and* pass into its own JSX would make TypeScript treat the two
+ * `@types/react` copies as nominally incompatible. Every other `CSSProperties` usage in this file
+ * stays internal (values only ever flow one way, self-consistently), so it isn't affected.
+ */
+export interface FleetSelectionStyle {
+  outline?: string;
+  outlineOffset?: string;
+}
+
+export interface FleetMediaImageStyle {
+  width?: string;
+  maxWidth?: string;
+}
 
 export interface FleetMediaImageProps {
   src: string;
   alt?: string;
   /** Intrinsic media width, when known — useful for CDN-aware image components to pick a variant. */
   width?: number;
-  style?: CSSProperties;
+  style?: FleetMediaImageStyle;
   className?: string;
   onLoad?: () => void;
 }
@@ -46,10 +66,10 @@ export interface FleetContentProps {
   selectedStickerIndex?: number | null;
   isMediaSelected?: boolean;
   /** Applied to a layer's wrapper when it's the selected one in editable mode. */
-  selectionStyle?: CSSProperties;
+  selectionStyle?: FleetSelectionStyle;
 }
 
-const DEFAULT_SELECTION_STYLE: CSSProperties = { outline: "2px solid currentColor", outlineOffset: "2px" };
+const DEFAULT_SELECTION_STYLE: FleetSelectionStyle = { outline: "2px solid currentColor", outlineOffset: "2px" };
 const DEFAULT_MEDIA_PLACEMENT = { posX: 0.5, posY: 0.5, scale: 1, rotation: 0 };
 
 /**
