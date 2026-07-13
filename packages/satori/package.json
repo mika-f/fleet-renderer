@@ -1,0 +1,48 @@
+{
+  "name": "@natsuneko-laboratory/fleet-renderer-satori",
+  "version": "0.1.0",
+  "description": "satori JSX element builder for server-side Fleet PNG rendering, built on @natsuneko-laboratory/fleet-renderer-core",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.tsx --format cjs,esm --dts --external react",
+    "dev": "tsup src/index.tsx --format cjs,esm --dts --external react --watch",
+    "test": "echo \"no tests yet — see teyvat's fleet-renderer.spec.ts for pixel-level coverage\" && exit 0",
+    "lint": "tsc --noEmit"
+  },
+  "keywords": [
+    "fleet",
+    "catalyst",
+    "renderer",
+    "satori"
+  ],
+  "repository": {
+    "url": "https://github.com/mika-f/fleet-renderer/"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@natsuneko-laboratory/fleet-renderer-core": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.6.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
