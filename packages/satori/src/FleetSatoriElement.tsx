@@ -6,6 +6,16 @@ import {
 } from "@natsuneko-laboratory/fleet-renderer-core";
 import type { ReactNode } from "react";
 
+// Unlike the react-native/react-dom adapters, `react` is bundled (not externalized) in this
+// package's build — see package.json's `build` script. Satori never mounts these elements through
+// real React reconciliation (no hooks, no dispatcher, no live component tree — it just walks a
+// plain `{ $$typeof, type, props }` tree), so there's no "two live React instances" risk the other
+// adapters have to avoid. Bundling instead sidesteps a real problem: a plain `require("react/jsx-
+// runtime")` left external only resolves when something bundler-aware (Metro, webpack) loads this
+// package; a bare `node -e` require (and, it turns out, Vitest's SSR module loader) can't find
+// `react` from this package's own location at all, since it isn't anywhere in its node_modules
+// ancestry.
+
 export interface FleetSatoriMedia {
   /** Pre-fetched image satori can embed directly (typically a `data:` URI — satori can't fetch remote URLs itself). */
   src: string;

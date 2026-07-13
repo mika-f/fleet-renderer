@@ -54,7 +54,7 @@ importers:
         version: 19.2.17
       react-native:
         specifier: ^0.86.0
-        version: 0.86.0(@types/react@19.2.17)
+        version: 0.86.0(@types/react@19.2.17)(react@19.2.7)
       tsup:
         specifier: ^8.0.0
         version: 8.5.1(postcss@8.5.18)(typescript@5.9.3)(yaml@2.9.0)
@@ -71,6 +71,9 @@ importers:
       '@types/react':
         specifier: ^19.0.0
         version: 19.2.17
+      react:
+        specifier: ^19.0.0
+        version: 19.2.7
       tsup:
         specifier: ^8.0.0
         version: 8.5.1(postcss@8.5.18)(typescript@5.9.3)(yaml@2.9.0)
@@ -1379,6 +1382,10 @@ packages:
     resolution: {integrity: sha512-jCvmsr+1IUSMUyzOkRcvnVbX3ZYC6g9TDrDbFuFmRDq7PD4yaGbLKNQL6k2jnArV8hjYxh7hVhAZB6s9HDGpZA==}
     engines: {node: '>=0.10.0'}
 
+  react@19.2.7:
+    resolution: {integrity: sha512-HNe9WslTbXmFK8o8cmwgAeJFSBvt1bPdHCVKtaaV+WlAN36mpT4hcRpwbf3fY56ar2oIXzsBpOAiIRHAdY0OlQ==}
+    engines: {node: '>=0.10.0'}
+
   readdirp@4.1.2:
     resolution: {integrity: sha512-GDhwkLfywWL2s6vEjyhri+eXmfH6j1L7JE27WhqLeYzoh/A3DBaYGEj2H/HFZCn/kMfim73FXxEJTw06WtxQwg==}
     engines: {node: '>= 14.18.0'}
@@ -2074,11 +2081,12 @@ snapshots:
 
   '@react-native/normalize-colors@0.86.0': {}
 
-  '@react-native/virtualized-lists@0.86.0(@types/react@19.2.17)(react-native@0.86.0(@types/react@19.2.17))':
+  '@react-native/virtualized-lists@0.86.0(@types/react@19.2.17)(react-native@0.86.0(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)':
     dependencies:
       invariant: 2.2.4
       nullthrows: 1.1.1
-      react-native: 0.86.0(@types/react@19.2.17)
+      react: 19.2.7
+      react-native: 0.86.0(@types/react@19.2.17)(react@19.2.7)
     optionalDependencies:
       '@types/react': 19.2.17
 
@@ -2951,7 +2959,7 @@ snapshots:
 
   react-is@18.3.1: {}
 
-  react-native@0.86.0(@types/react@19.2.17):
+  react-native@0.86.0(@types/react@19.2.17)(react@19.2.7):
     dependencies:
       '@react-native/assets-registry': 0.86.0
       '@react-native/codegen': 0.86.0
@@ -2959,7 +2967,7 @@ snapshots:
       '@react-native/gradle-plugin': 0.86.0
       '@react-native/js-polyfills': 0.86.0
       '@react-native/normalize-colors': 0.86.0
-      '@react-native/virtualized-lists': 0.86.0(@types/react@19.2.17)(react-native@0.86.0(@types/react@19.2.17))
+      '@react-native/virtualized-lists': 0.86.0(@types/react@19.2.17)(react-native@0.86.0(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)
       abort-controller: 3.0.0
       anser: 1.4.10
       ansi-regex: 5.0.1
@@ -2975,6 +2983,7 @@ snapshots:
       nullthrows: 1.1.1
       pretty-format: 29.7.0
       promise: 8.3.0
+      react: 19.2.7
       react-devtools-core: 6.1.5
       react-refresh: 0.14.2
       regenerator-runtime: 0.13.11
@@ -2995,6 +3004,8 @@ snapshots:
       - utf-8-validate
 
   react-refresh@0.14.2: {}
+
+  react@19.2.7: {}
 
   readdirp@4.1.2: {}
 
