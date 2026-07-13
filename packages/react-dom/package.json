@@ -16,8 +16,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup src/index.tsx --format cjs,esm --dts --external react --external react-dom",
-    "dev": "tsup src/index.tsx --format cjs,esm --dts --external react --external react-dom --watch",
+    "build": "tsdown src/index.tsx --format cjs,esm --dts --external react --external react-dom",
+    "dev": "tsdown src/index.tsx --format cjs,esm --dts --external react --external react-dom --watch",
     "test": "echo \"no tests yet\" && exit 0",
     "lint": "tsc --noEmit"
   },
@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@types/react": "^19.0.0",
-    "tsup": "^8.0.0",
+    "tsdown": "^0.22.7",
     "typescript": "^5.6.0"
   },
   "publishConfig": {
