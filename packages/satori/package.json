@@ -19,7 +19,8 @@
     "build": "tsdown",
     "dev": "tsdown --watch",
     "test": "echo \"no tests yet — see teyvat's fleet-renderer.spec.ts for pixel-level coverage\" && exit 0",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "prepublishOnly": "pnpm run build"
   },
   "keywords": [
     "fleet",

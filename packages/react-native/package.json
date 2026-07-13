@@ -21,7 +21,8 @@
     "build": "tsdown src/index.tsx --format cjs,esm --dts --external react --external react-native",
     "dev": "tsdown src/index.tsx --format cjs,esm --dts --external react --external react-native --watch",
     "test": "echo \"no tests yet\" && exit 0",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "prepublishOnly": "pnpm run build"
   },
   "keywords": [
     "fleet",
