@@ -1,6 +1,6 @@
 {
   "name": "@natsuneko-laboratory/fleet-renderer-core",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Platform-agnostic types, constants, and layout engine for Fleet rendering",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

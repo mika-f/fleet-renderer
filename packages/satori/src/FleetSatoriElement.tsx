@@ -88,13 +88,23 @@ export const buildFleetSatoriElement = (
         overflow: "hidden",
       }}
     >
+      {/*
+        Layer anchoring note: every layer positions its own top-left in px (`center - size / 2`)
+        instead of the CSS-idiomatic `left: center; transform: translate(-50%, -50%)`. satori's
+        percentage-translate support is unreliable for elements containing text — it translates the
+        background rect but leaves the glyphs at the untranslated position, so text renders anchored
+        by its top-left corner and gets clipped at the canvas' right edge. Since box sizes are known
+        here (media/sticker sizes from layout, text boxes from the measure pass), px anchoring is
+        exact and sidesteps the whole problem. scale()/rotate() stay in `transform`, which satori
+        applies about the element center as CSS does.
+      */}
       {layout.media && media ? (
         <div
           style={{
             position: "absolute",
-            left: (fleet.media?.placement?.posX ?? 0.5) * canvas.width,
-            top: (fleet.media?.placement?.posY ?? 0.5) * canvas.height,
-            transform: `translate(-50%, -50%) scale(${layout.media.transform.scale}) rotate(${layout.media.transform.rotationDeg}deg)`,
+            left: (fleet.media?.placement?.posX ?? 0.5) * canvas.width - canvas.width / 2,
+            top: (fleet.media?.placement?.posY ?? 0.5) * canvas.height - Math.round(layout.media.heightPx) / 2,
+            transform: `scale(${layout.media.transform.scale}) rotate(${layout.media.transform.rotationDeg}deg)`,
             display: "flex",
           }}
         >
@@ -114,16 +124,17 @@ export const buildFleetSatoriElement = (
         const box = textBoxes?.get(index);
 
         if (!box) {
-          // Measure pass: natural (1x scale, 0deg) box, anchored by its top-left corner — satori
-          // just needs somewhere to lay out the flex line. Applying scale/rotate here would report
-          // an already-transformed size, corrupting the boundingRadius math the final pass needs.
+          // Measure pass: natural (1x scale, 0deg) box, anchored at the canvas origin — satori
+          // just needs somewhere to lay out the flex line, and anchoring at (0, 0) keeps the
+          // measurement free of any edge-proximity constraints. Applying scale/rotate here would
+          // report an already-transformed size, corrupting the bounding-box math the final pass needs.
           return (
             <div
               key={`text-${index}`}
               style={{
                 position: "absolute",
-                left: original.posX * canvas.width,
-                top: original.posY * canvas.height,
+                left: 0,
+                top: 0,
                 display: "flex",
                 maxWidth: text.maxWidthPx,
                 fontFamily: text.font.satoriFontName,
@@ -151,9 +162,14 @@ export const buildFleetSatoriElement = (
             key={`text-${index}`}
             style={{
               position: "absolute",
-              left: placement.posX * canvas.width,
-              top: placement.posY * canvas.height,
-              transform: `translate(-50%, -50%) scale(${placement.scale}) rotate(${placement.rotation}deg)`,
+              left: placement.posX * canvas.width - box.width / 2,
+              top: placement.posY * canvas.height - box.height / 2,
+              // Fixing the width to the measured box keeps this pass' line breaking identical to
+              // the measure pass, so the px anchoring above stays exact. satori reports node.width
+              // rounded to an integer, which can sit just below the true fractional content width —
+              // handing that value straight back would re-wrap the last glyph, so pad it by 1px.
+              width: Math.ceil(box.width) + 1,
+              transform: `scale(${placement.scale}) rotate(${placement.rotation}deg)`,
               color: text.color,
               textAlign: text.textAlignment,
               display: "flex",
@@ -194,9 +210,9 @@ export const buildFleetSatoriElement = (
             key={`sticker-${index}`}
             style={{
               position: "absolute",
-              left: placement.posX * canvas.width,
-              top: placement.posY * canvas.height,
-              transform: `translate(-50%, -50%) scale(${placement.scale}) rotate(${placement.rotation}deg)`,
+              left: placement.posX * canvas.width - sticker.sizePx / 2,
+              top: placement.posY * canvas.height - sticker.sizePx / 2,
+              transform: `scale(${placement.scale}) rotate(${placement.rotation}deg)`,
               display: "flex",
             }}
           >
