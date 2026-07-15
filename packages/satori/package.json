@@ -1,6 +1,6 @@
 {
   "name": "@natsuneko-laboratory/fleet-renderer-satori",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "satori JSX element builder for server-side Fleet PNG rendering, built on @natsuneko-laboratory/fleet-renderer-core",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

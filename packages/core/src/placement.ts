@@ -43,44 +43,62 @@ export interface BoundingBoxPx {
   height: number;
 }
 
+export interface BoundingHalfExtentsPx {
+  halfWidthPx: number;
+  halfHeightPx: number;
+}
+
 /**
- * Radius (px) of the circle that fully contains a `width` x `height` box at the given `scale`,
- * regardless of rotation — i.e. the box's diagonal half-length. Rotation-safe by construction,
- * since a box's bounding circle doesn't change as it spins about its own center.
+ * Half-extents (px) of the axis-aligned bounding box of a `width` x `height` box after applying
+ * `scale` and `rotationDeg` about its own center. Exact for rectangles — unlike a bounding-circle
+ * radius (diagonal half-length), which grossly overestimates the needed clearance for wide,
+ * unrotated boxes (e.g. a full-width text pill) and would pull them far away from the edge.
  */
-export const computeBoundingRadiusPx = (box: BoundingBoxPx, scale: number): number =>
-  Math.hypot(box.width / 2, box.height / 2) * scale;
+export const computeBoundingHalfExtentsPx = (
+  box: BoundingBoxPx,
+  scale: number,
+  rotationDeg: number,
+): BoundingHalfExtentsPx => {
+  const rad = (rotationDeg * Math.PI) / 180;
+  const cos = Math.abs(Math.cos(rad));
+  const sin = Math.abs(Math.sin(rad));
+
+  return {
+    halfWidthPx: ((box.width * cos + box.height * sin) / 2) * scale,
+    halfHeightPx: ((box.width * sin + box.height * cos) / 2) * scale,
+  };
+};
 
 export interface ClampCenterToCanvasOptions {
   centerXPx: number;
   centerYPx: number;
-  radiusPx: number;
+  halfExtents: BoundingHalfExtentsPx;
   container: ContainerSize;
 }
 
 /**
- * Pulls a layer's center inward, per axis, so its bounding circle never crosses the canvas edge.
- * If the circle is larger than the canvas along an axis, that axis is centered instead of clamped.
+ * Pulls a layer's center inward, per axis, so its bounding box never crosses the canvas edge.
+ * If the box is larger than the canvas along an axis, that axis is centered instead of clamped.
  */
 export const clampCenterToCanvas = ({
   centerXPx,
   centerYPx,
-  radiusPx,
+  halfExtents,
   container,
 }: ClampCenterToCanvasOptions): { x: number; y: number } => {
-  const clampAxis = (center: number, size: number) => {
-    if (radiusPx * 2 >= size) return size / 2;
-    return Math.min(Math.max(center, radiusPx), size - radiusPx);
+  const clampAxis = (center: number, size: number, halfExtent: number) => {
+    if (halfExtent * 2 >= size) return size / 2;
+    return Math.min(Math.max(center, halfExtent), size - halfExtent);
   };
 
   return {
-    x: clampAxis(centerXPx, container.width),
-    y: clampAxis(centerYPx, container.height),
+    x: clampAxis(centerXPx, container.width, halfExtents.halfWidthPx),
+    y: clampAxis(centerYPx, container.height, halfExtents.halfHeightPx),
   };
 };
 
 /**
- * Convenience wrapper combining {@link placementToPixelTransform}, {@link computeBoundingRadiusPx},
+ * Convenience wrapper combining {@link placementToPixelTransform}, {@link computeBoundingHalfExtentsPx},
  * and {@link clampCenterToCanvas}: returns a `FleetPlacement` whose `posX`/`posY` have been pulled
  * inward so the box never visually clips the canvas edge. Scale/rotation pass through unchanged.
  */
@@ -90,11 +108,11 @@ export const clampPlacementToCanvas = (
   container: ContainerSize,
 ): FleetPlacement => {
   const transform = placementToPixelTransform(placement, container);
-  const radiusPx = computeBoundingRadiusPx(box, placement.scale);
+  const halfExtents = computeBoundingHalfExtentsPx(box, placement.scale, placement.rotation);
   const centerXPx = container.width / 2 + transform.translateX;
   const centerYPx = container.height / 2 + transform.translateY;
 
-  const clamped = clampCenterToCanvas({ centerXPx, centerYPx, radiusPx, container });
+  const clamped = clampCenterToCanvas({ centerXPx, centerYPx, halfExtents, container });
 
   return {
     ...placement,
